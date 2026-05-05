@@ -554,15 +554,21 @@ sprites.onOverlap(SpriteKind.joueur, SpriteKind.Food, function (joueur, otherSpr
 })
 function AI_soldier_target () {
     if (AI_soldier_spawned == true && AI_soldier_taken == false) {
-        // Trouver le zombie le plus proche
         zombies = sprites.allOfKind(SpriteKind.Enemy)
-        distanceMin = 9999
-        // Chercher le zombie le plus proche du soldat
-        for (let zombie of zombies) {
-            dist = Math.abs(zombie.x - AI_soldier.x) + Math.abs(zombie.y - AI_soldier.y)
-            if (dist < distanceMin) {
-                distanceMin = dist
-                zombieCible = zombie
+        // Vérifier si la cible actuelle est toujours valide (pas détruite)
+        if (zombieCible && zombies.indexOf(zombieCible) >= 0) {
+            // On garde la cible actuelle, pas besoin de chercher
+        } else {
+            // Trouver le zombie le plus proche
+            distanceMin = 9999
+            zombieCible = null
+            // Chercher le zombie le plus proche du soldat
+            for (let zombie of zombies) {
+                dist = Math.abs(zombie.x - AI_soldier.x) + Math.abs(zombie.y - AI_soldier.y)
+                if (dist < distanceMin) {
+                    distanceMin = dist
+                    zombieCible = zombie
+                }
             }
         }
         // Si un zombie est trouvé
